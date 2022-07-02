@@ -3,10 +3,14 @@ const { Schema, model } = require('mongoose');
 
 const PizzaSchema = new Schema({
   pizzaName: {
-    type: String
+    type: String,
+    required: true,  // adding validation/ will require data to exist for that field
+    trim: true       // removes white space before and after the input string
   },
   createdBy: {
-    type: String
+    type: String,
+    required: true,
+    trim: true
   },
   createdAt: {
     type: Date,
@@ -15,7 +19,10 @@ const PizzaSchema = new Schema({
   },
   size: {
     type: String,
+    required: true,
+    enum: ['Personal', 'Small', 'Medium', 'Large', 'Extra Large'],
     default: 'Large'
+      
   },
   comments: [
     {
@@ -35,7 +42,7 @@ const PizzaSchema = new Schema({
 
 // get total count of comments and replies on retrieval / Needs toJSON property to the schema options as seen above.
 PizzaSchema.virtual('commentCount').get(function() {
-  return this.comments.length;
+  return this.comments.reduce((total, comment) => total + comment.replies.length + 1, 0); // Here we're using the .reduce() method to tally up the total of every comment with its replies. In its basic form
 });
 
 const Pizza = model('Pizza', PizzaSchema);

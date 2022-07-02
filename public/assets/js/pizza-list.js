@@ -1,10 +1,10 @@
 const $pizzaList = document.querySelector('#pizza-list');
 
-const getPizzaList = () => {
+const getPizzaList = () => {    // for each pizza in the db to this
   fetch('/api/pizzas')
     .then(response => response.json())
     .then(pizzaListArr => {
-      pizzaListArr.forEach(printPizza);
+      pizzaListArr.forEach(printPizza);   
     })
     .catch(err => {
       console.log(err);
